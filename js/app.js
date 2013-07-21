@@ -1,28 +1,22 @@
-var marked = require('marked');
+var marked = require('./views/impress/bower_components/marked/lib/marked');
 
 var gui = require('nw.gui'),
     win = gui.Window.get();
 
 var opt = {
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: false,
-  smartLists: true,
-  smartypants: true,
-  silent: false,
-  langPrefix: 'language-'
+  "gfm": true,
+  "tables": true,
+  "breaks": false,
+  "pedantic": false,
+  "sanitize": false,
+  "smartLists": true,
+  "smartypants": true,
+  "silent": false,
+  "highlight": null,
+  "langPrefix": ''
 };
 
 marked.setOptions(opt);
-
-var renderer = new marked.Renderer();
-
-var parse = function(src, options) {
-  options = options || opt;
-  return marked.parser(marked.lexer(src, options), options, renderer);
-}
 
 function tokenize(md) {
 	var tokens = md.split('===');
@@ -35,7 +29,7 @@ function convert(md) {
   tokens = tokenize(md);
 
   tokens.forEach(function(item, idx) {
-    steps.push('<div class="step">\n\t' + parse(item) + '\n</div>');
+    steps.push('<div class="step">\n\t' + marked(item) + '\n</div>');
   });
 
   return steps.join('\n\n');
